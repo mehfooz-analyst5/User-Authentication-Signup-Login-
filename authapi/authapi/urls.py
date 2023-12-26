@@ -27,7 +27,8 @@ urlpatterns = [
 
 
     #Account App
-    # path('api/', include('account.urls')),
+    path('account/', include('account.urls')),
+    
 
     # ... Your other URL patterns ...
     path('api/schema/', SpectacularAPIView.as_view(), name='api-schema'),
