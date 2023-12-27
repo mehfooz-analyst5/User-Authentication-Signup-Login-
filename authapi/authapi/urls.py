@@ -27,7 +27,7 @@ urlpatterns = [
 
 
     #Account App
-    path('account/', include('account.urls')),
+    path('api/user/', include('account.urls')),
     
 
     # ... Your other URL patterns ...
