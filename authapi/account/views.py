@@ -8,6 +8,7 @@ from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_4
 
 from .serializers import UserRegistrationSerializer, UserLoginSerializer
 from .models import User
+from .renderers import UserRenderer
 
 
 """
@@ -16,6 +17,7 @@ Making Api for User Registration and user login.
 
 
 class UserRegistrationView(APIView):
+    renderer_classes = [UserRenderer]
 
     def post(self, request, format=None):
         serializer = UserRegistrationSerializer(data=request.data)
@@ -29,6 +31,8 @@ class UserRegistrationView(APIView):
 
 
 class UserLoginView(APIView):
+    renderer_classes = [UserRenderer]
+
     def post(self, request, format=None):
         serializer = UserLoginSerializer(data=request.data)
 
