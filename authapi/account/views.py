@@ -8,7 +8,7 @@ from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_4
 
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .serializers import UserRegistrationSerializer, UserLoginSerializer, UserProfileSerializer, UserChangePasswordSerializer
+from .serializers import UserRegistrationSerializer, UserLoginSerializer, UserProfileSerializer, UserChangePasswordSerializer, SendPasswordResetEmailSerializer, UserPasswordResetSerializer
 from .models import User
 from .renderers import UserRenderer
 
@@ -27,7 +27,7 @@ def get_tokens_for_user(user):
 
 
 class UserRegistrationView(APIView):
-    renderer_classes = [UserRenderer]
+    # renderer_classes = [UserRenderer]
 
     """
         Method for get all the data of registered user.
@@ -93,3 +93,22 @@ class UserChangePasswordView(APIView):
             return Response({'mg':'Password changed successfully'}, status=HTTP_201_CREATED)
         
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+    
+
+class SendPasswordResetEmailView(APIView):
+    renderer_classes = [UserRenderer]
+
+    def post(self, request, format=None):
+        serializer = SendPasswordResetEmailSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        return Response({'mg':'Password Reset Link send, please check your email.'}, status=HTTP_200_OK)
+        
+
+
+class UserPasswordResetView(APIView):
+    renderer_classes = [UserRenderer] 
+
+    def post(self, request, uid, token, format=None):
+        serializer = UserPasswordResetSerializer(data=request.data, context={'uid':uid, 'token':token})
+        serializer.is_valid(raise_exception=True)
+        return Response({'mg':'Password Reset successfully'}, status=HTTP_200_OK)
